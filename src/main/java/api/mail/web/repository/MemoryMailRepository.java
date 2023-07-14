@@ -31,7 +31,7 @@ public class MemoryMailRepository implements MailRepository {
      * @return 메일 id에 해당하는 메일. 데이터가 없을 수 있다.
      */
     @Override
-    public Optional<Mail> findById(Long id) {
+    public Optional<Mail> findById(AtomicLong id) {
         return Optional.ofNullable(store.get(id));
     }
 
