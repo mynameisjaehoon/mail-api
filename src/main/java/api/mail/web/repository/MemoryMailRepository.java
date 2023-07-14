@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 @Repository
 public class MemoryMailRepository implements MailRepository {
 
-    private static final ConcurrentHashMap<Long, Mail> store = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<AtomicLong, Mail> store = new ConcurrentHashMap<>();
     private static AtomicLong sequence = new AtomicLong(1);
 
     @Override
     public Mail save(Mail mail) {
-        mail.setId(sequence.getAndSet(sequence.get() + 1));
+        mail.setId(new AtomicLong(sequence.getAndSet(sequence.get() + 1)));
         store.put(mail.getId(), mail);
         return mail;
     }
