@@ -11,8 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static org.assertj.core.api.Assertions.*;
 
 
 @SpringBootTest
@@ -32,17 +34,26 @@ class MemoryMailRepositoryTest {
     @DisplayName("메일 데이터 저장")
     void saveMailTest() {
 
-        User userA = new User(1L, "aaa@gmail.com", "userA", "");
-        User userB = new User(2L, "bbb@gmail.com", "userB", "");
+        User userA = new User(new AtomicLong(1), "aaa@gmail.com", "userA", "");
+        User userB = new User(new AtomicLong(2), "bbb@gmail.com", "userB", "");
 
         Mail mail = new Mail(null, userA, userB, LocalDateTime.now(), "제목", "본문");
         Mail savedMail = mailRepository.save(mail);
 
-        Assertions.assertThat(mail).isSameAs(savedMail);
+        assertThat(mail).isSameAs(savedMail);
     }
 
     @Test
     void findById() {
+
+        User userA = new User(new AtomicLong(1), "aaa@gmail.com", "userA", "");
+        User userB = new User(new AtomicLong(2), "bbb@gmail.com", "userB", "");
+
+        Mail mail = new Mail(null, userA, userB, LocalDateTime.now(), "제목", "본문");
+        Mail savedMail = mailRepository.save(mail);
+        Mail findMail = mailRepository.findById(savedMail.getId()).orElse(null);
+
+        assertThat(findMail).isEqualTo(findMail);
     }
 
     @Test
